@@ -25,7 +25,7 @@ public class Reddit {
 	 * @return A set of current requests on the RRF subreddit
 	 */
 	public Set<Request> get() {
-		Set<Request> requests = new HashSet<Request>();
+		List<Request> requests = new LinkedList<Request>();
 		try {
 			// Retrieves the document from the website
 			Document doc = Jsoup.connect(url).get();
