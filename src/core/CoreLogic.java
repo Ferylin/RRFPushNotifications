@@ -1,5 +1,9 @@
 package core;
 
+import io.read.Settings;
+
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.Push;
@@ -11,8 +15,9 @@ public class CoreLogic {
 	public static void main(String[] args) throws InterruptedException {
 		Reddit red = new Reddit();
 		Set<Request> requests = null;
-		Push push = new Push("a225CwUC4RPQ1wxUYVjrrXtLTHAqb5",
-				"u9PddXkt7xJTTnWwiTqmwx3AhigKX8");
+		Settings settings = new Settings();
+		Push push = new Push(settings.get("application-token"),
+				settings.get("user-token"));
 		// Will run indefinately until shut down, can be fixed at some point.
 		while (true) {
 			// Thread sleeps for 15 secs to not continually consume cpu and
