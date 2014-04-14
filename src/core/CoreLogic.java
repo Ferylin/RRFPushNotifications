@@ -13,11 +13,15 @@ import entities.Request;
 public class CoreLogic {
 
 	public static void main(String[] args) throws InterruptedException {
+		System.out.println("Program started.");
 		Reddit red = new Reddit();
 		Set<Request> requests = null;
+		System.out.println("Loading settings.");
 		Settings settings = new Settings();
+		System.out.println("Loaded settings.\nSetting up Push messaging.");
 		Push push = new Push(settings.get("application-token"),
 				settings.get("user-token"));
+		System.out.println("Monitoring RRF requests.");
 		// Will run indefinately until shut down, can be fixed at some point.
 		while (true) {
 			// Thread sleeps for 15 secs to not continually consume cpu and

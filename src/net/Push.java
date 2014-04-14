@@ -60,6 +60,7 @@ public class Push {
 			DataOutputStream wr = new DataOutputStream(
 					connection.getOutputStream());
 			wr.writeBytes(urlParameters);
+			print_content(connection);
 			wr.flush();
 			wr.close();
 			connection.disconnect();
@@ -103,6 +104,7 @@ public class Push {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void print_https_cert(HttpsURLConnection con) {
 
 		if (con != null) {
@@ -139,7 +141,7 @@ public class Push {
 
 			try {
 
-				System.out.println("****** Content of the URL ********");
+				System.out.println("Push response:");
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						con.getInputStream()));
 
