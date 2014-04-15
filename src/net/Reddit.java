@@ -1,8 +1,8 @@
 package net;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,7 +24,7 @@ public class Reddit {
 	 * 
 	 * @return A set of current requests on the RRF subreddit
 	 */
-	public Set<Request> get() {
+	public List<Request> get() {
 		List<Request> requests = new LinkedList<Request>();
 		try {
 			// Retrieves the document from the website
