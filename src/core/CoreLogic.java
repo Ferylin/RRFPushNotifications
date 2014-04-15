@@ -5,6 +5,8 @@ import io.read.Settings;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.Push;
 import net.Reddit;
@@ -18,6 +20,8 @@ public class CoreLogic {
 		Set<Request> requests = null;
 		System.out.println("Loading settings.");
 		Settings settings = new Settings();
+		Pattern ignored = prepareFilterPattern(settings.get("ignore-keywords"));
+		Pattern include = prepareFilterPattern(settings.get("filter-keywords"));
 		System.out.println("Loaded settings.\nSetting up Push messaging.");
 		Push push = new Push(settings.get("application-token"),
 				settings.get("user-token"));
@@ -37,10 +41,23 @@ public class CoreLogic {
 					// notification if they are
 					if (requests.contains(req))
 						break;
+					System.out.println("New request!");
 					requests.add(req);
-					System.out.println("Sent: " + req.getTitle() + " by user: "
+					System.out.println(req.getTitle() + " by user: "
 							+ req.getAuthor());
-					push.send(req.getTitle() + " by user: " + req.getAuthor());
+					if ((include == null || inFilter(req.getTitle(), include))
+							&& (ignored == null || !inFilter(req.getTitle(),
+									ignored))) {
+						push.send(req.getTitle() + " by user: "
+								+ req.getAuthor());
+					} else {
+						System.out.println("Filtered by filter: "
+								+ !(include == null || inFilter(req.getTitle(),
+										include)));
+						System.out.println("Filtered by exclude: "
+								+ !(ignored == null || !inFilter(
+										req.getTitle(), ignored)));
+					}
 					// Add actions for new requests here. For example play a
 					// sound locally.
 
@@ -52,4 +69,21 @@ public class CoreLogic {
 
 		}
 	}
+
+	private static Pattern prepareFilterPattern(String string) {
+		if (string.trim().length() == 0)
+			return null;
+		String pattern = "(?i)(";
+		for (String s : string.split(","))
+			pattern = pattern + s.trim() + "|";
+		if (pattern.charAt(pattern.length() - 1) == '|')
+			pattern = pattern.substring(0, pattern.length() - 2) + ")";
+		return Pattern.compile(pattern);
+	}
+
+	public static boolean inFilter(String s, Pattern pattern) {
+		Matcher matcher = pattern.matcher(s);
+		return matcher.find();
+	}
+
 }

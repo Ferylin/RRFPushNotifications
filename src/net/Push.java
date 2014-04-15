@@ -141,7 +141,7 @@ public class Push {
 
 			try {
 
-				System.out.println("Push response:");
+				System.out.println("Push sent. Response:");
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						con.getInputStream()));
 

@@ -43,8 +43,8 @@ public class Reddit {
 					requests.add(new Request(title, author));
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out
+					.println("Fetching the webpage failed, waiting 15 secs before trying again as normal.");
 		}
 		return requests;
 	}
